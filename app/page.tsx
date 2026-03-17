@@ -56,10 +56,10 @@ export default function LoveLetterPage() {
         {/* HEADER */}
         <div className="text-center mb-10">
           <h1 className="text-5xl font-extrabold text-[#ff4d6d] tracking-tight drop-shadow-sm">
-            Letter's 
+            Letters 
           </h1>
           <p className="text-[#ff758f] mt-2 text-lg font-medium opacity-90">
-            Cette lettre, en apparence anodine, est pourtant faite avec sincérité.
+            chào, hola, halo, hi, bonjour, 你好, Привет
           </p>
         </div>
 
@@ -134,7 +134,7 @@ export default function LoveLetterPage() {
               <div className="space-y-4 text-gray-700 leading-relaxed text-lg italic">
                   <p className="indent-8">
                   Hi tea, idunno I just suddenly thought of making this, cz you are probably the biggest and sweetest soul I’ve ever met. 
-                  I know lately things have been feeling heavy with all those exams—I can almost hear you saying 'Mệt quá đii' from here—but I want you to know that I see how hard you’re working, and I’m already so proud of you.
+                  I know lately things have been feeling heavy with all those exams— I see how hard you’re working, and I’m already so proud of you.
                   </p>
                   <p>
                     Please don't push yourself too hard, okay? Your brain needs a break too! If you ever feel like the world is a bit too much, or if those exams are driving you crazy, I’m right here. Whether you want to tell me 'today I was...' or just a frustrated 'damn it, today was...', 
@@ -142,11 +142,10 @@ export default function LoveLetterPage() {
                   </p>
                   <p>
                     Actually, I also want to be honest with you— I’m far from perfect and I’m definitely not that good at many things, so please don't have too high expectations of me.. 
-                    I really hope our friendship can last for a very long time, through the busy we do, the 'mệt quá' days, and all the damn time we spend together in Sky. I’d love to keep growing and learning alongside a soul as kind as yours.
+                    I really hope our friendship can last for a very long time, through the busy we do, and all the damn time we spend together in Sky. I’d love to keep growing and learning alongside a soul as kind as yours.
                   </p>
                   <p>
-                    I’m truly, deeply enchanted to meet you. Thank you for being such a light in my life and for being my another favorite person to fly with in Sky. 
-                    Let’s make a deal: you finish those exams, and then we’ll go on a long, stress-free candle run together, okay? HAHAH
+                    I’m truly, deeply enchanted to meet you. Thank you for being such a light in my life and for being my favorite person.
                   </p>
                   <p>
                     Until then, eat well, get some proper sleep, and just breathe. You’re doing amazing.
