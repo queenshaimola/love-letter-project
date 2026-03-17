@@ -13,9 +13,9 @@ export default function LoveLetterPage() {
   const CORRECT_PASSWORD = 'teamo'; 
   
   const photos = [
-    { src: '/us3.jpeg', caption: 'Me, You, Atsmosphere' },
+    { src: '/us3.jpeg', caption: 'Me, You, Atmosphere' },
     { src: '/tea.jpeg', caption: 'Tea.' },
-    { src: '/us1.jpeg', caption: 'chibi' },
+    { src: '/us1.jpeg', caption: 'Duo' },
     { src: '/us2.png', caption: 'Grandma Core' },
     
   ];
