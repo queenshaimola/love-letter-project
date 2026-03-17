@@ -1,141 +1,198 @@
-'use client'; // Wajib ada ini di paling atas karena kita pakai state (interaksi)
+'use client';
 
 import { useState } from 'react';
 
 export default function LoveLetterPage() {
-  // === BAGIAN LOGIKA (STATES) ===
+  // === 1. LOGIKA (STATES) ===
   const [stage, setStage] = useState<'closed' | 'password' | 'open'>('closed');
   const [passwordInput, setPasswordInput] = useState('');
   const [loginError, setLoginError] = useState(false);
+  const [currentPhoto, setCurrentPhoto] = useState(0);
 
-  // GANTI PASSWORD-NYA DI SINI
+  // KONFIGURASI DATA
   const CORRECT_PASSWORD = 'teamo'; 
+  
+  const photos = [
+    { src: '/us3.jpeg', caption: 'Me, You, Atsmosphere' },
+    { src: '/tea.jpeg', caption: 'Tea.' },
+    { src: '/us1.jpeg', caption: 'chibi' },
+    { src: '/us2.png', caption: 'Grandma Core' },
+    
+  ];
 
-  // Fungsi untuk cek password
+  // === 2. FUNGSI ===
   const handleUnlock = (e: React.FormEvent) => {
     e.preventDefault();
     if (passwordInput === CORRECT_PASSWORD) {
       setLoginError(false);
-      setStage('open'); // Password bener, buka suratnya!
+      setStage('open');
     } else {
-      setLoginError(true); // Password salah
-      setPasswordInput(''); // Reset input
+      setLoginError(true);
+      setPasswordInput('');
     }
   };
 
-  // === BAGIAN TAMPILAN (UI) ===
+  const nextPhoto = () => setCurrentPhoto((prev) => (prev + 1) % photos.length);
+  const prevPhoto = () => setCurrentPhoto((prev) => (prev - 1 + photos.length) % photos.length);
+
   return (
-    <main className="min-h-screen bg-rose-50 flex flex-col items-center justify-center p-4 font-sans text-gray-800">
+    <main className="min-h-screen flex flex-col items-center justify-center p-6 bg-[#fff0f3] relative overflow-hidden font-sans">
       
-      {/* 1. HEADER (Mirip foto kamu) */}
-      <div className="text-center mb-12">
-        <h1 className="text-5xl font-extrabold text-rose-600 tracking-tight">
-          Sweet Letter
-        </h1>
-        <p className="text-gray-600 mt-2 text-lg">
-          made with sincere heart 
-        </p>
-      </div>
+      {/* BACKGROUND VIDEO DENGAN EFEK SCREEN (CERAH) */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+        style={{ mixBlendMode: "screen", opacity: 0.8 }}
+      >
+        <source src="/petals.mp4" type="video/mp4" />
+      </video>
 
-      {/* 2. AREA AMPLOP / KOTAK DIALOG */}
-      <div className="bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-rose-100 w-full max-w-lg transition-all duration-500 ease-in-out transform hover:scale-105">
+      {/* 3. AREA KONTEN UTAMA */}
+      <div className="relative z-20 w-full max-w-sm md:max-w-md">
         
-        {/* === TAHAP 1: AMPLOP BELUM DIBUKA === */}
-        {stage === 'closed' && (
-          <div className="text-center space-y-8">
-            <h2 className="text-2xl font-semibold text-gray-700">You have a new message!</h2>
-            {/* Ikon Amplop Besar */}
-            <div className="text-9xl animate-pulse cursor-pointer hover:rotate-6 transition-transform">
-              ✉️
-            </div>
-            <p className="text-gray-500">Click the envelope to unlock it.</p>
-            <button 
-              onClick={() => setStage('password')} // Klik untuk masuk ke tahap password
-              className="bg-rose-500 hover:bg-rose-600 text-white font-semibold px-8 py-3 rounded-full text-lg shadow-md transition"
-            >
-              Open Message
-            </button>
-          </div>
-        )}
+        {/* HEADER */}
+        <div className="text-center mb-10">
+          <h1 className="text-5xl font-extrabold text-[#ff4d6d] tracking-tight drop-shadow-sm">
+            Letter's 
+          </h1>
+          <p className="text-[#ff758f] mt-2 text-lg font-medium opacity-90">
+            Cette lettre, en apparence anodine, est pourtant faite avec sincérité.
+          </p>
+        </div>
 
-        {/* === TAHAP 2: KONFIRMASI PASSWORD === */}
-        {stage === 'password' && (
-          <form onSubmit={handleUnlock} className="text-center space-y-6">
-            <div className="text-6xl">🔒</div>
-            <h2 className="text-2xl font-semibold text-gray-700">Authentication Required</h2>
-            <p className="text-gray-600">Please enter the password to see the letter.</p>
-            
-           <input
-          type="password"
-          onChange={(e) => setPasswordInput(e.target.value)}
-          placeholder="Enter password..."
-          // Perhatikan penggunaan kurung kurawal di bawah ini
-          className={`w-full p-4 border rounded-xl text-center text-lg focus:outline-none focus:ring-2 ${
-          loginError 
-        ?    'border-red-500 focus:ring-red-200' 
-          : 'border-gray-300 focus:ring-rose-200'
-          }`}
-          required
-          />
-            
-            {loginError && <p className="text-red-500 text-sm font-medium">❌ Incorrect password. Try again.</p>}
-            
-            <div className="flex space-x-3">
-                <button 
-                  type="button"
-                  onClick={() => setStage('closed')} // Tombol Batal
-                  className="w-1/2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-3 rounded-xl transition"
-                >
-                  Cancel
-                </button>
-                <button 
-                  type="submit" // Tombol Unlock
-                  className="w-1/2 bg-rose-500 hover:bg-rose-600 text-white font-semibold py-3 rounded-xl shadow-md transition"
-                >
-                  Unlock
-                </button>
+        {/* BOX PUTIH / CARD (GLASSMORPHISM) */}
+        <div className="bg-white/40 backdrop-blur-xl p-8 md:p-12 rounded-[3rem] shadow-2xl border border-white/50 transition-all duration-500">
+          
+          {/* TAHAP 1: AMPLOP BELUM DIBUKA */}
+          {stage === 'closed' && (
+            <div className="text-center space-y-8 py-4">
+              <h2 className="text-2xl font-semibold text-gray-700">You have a new message!</h2>
+              <div className="text-9xl animate-pulse cursor-pointer hover:rotate-6 transition-transform">
+                ✉️
+              </div>
+              <p className="text-gray-500">Click the button to unlock it.</p>
+              <button 
+                onClick={() => setStage('password')}
+                className="w-full bg-[#ff4d6d] hover:bg-[#ff758f] text-white font-bold py-4 rounded-2xl shadow-lg transition active:scale-95"
+              >
+                Open Message
+              </button>
             </div>
-          </form>
-        )}
-        {/* === TAHAP 3: SURAT SUDAH TERBUKA === */}
-        {stage === 'open' && (
-          <div className="space-y-10 animate-fade-in">
-            {/* Header Surat */}
-            <div className="border-b-2 border-dashed border-rose-200 pb-4 text-center">
-                <h2 className="text-3xl font-bold text-gray-800">My Heartfelt Message</h2>
-                <p className="text-rose-400 font-medium">To My Dearest Friend, Tea.</p>
-            </div>
+          )}
 
-            {/* Isu Surat */}
-            <div className="space-y-4 text-gray-700 leading-relaxed text-lg">
-                <p className="indent-8">
-                  Hi tea, idunno I just suddenly thought of making this, cz u are the biggest and sweetest person I've ever met! Hehe.. you know I'm right here if you want to say anything like "today i was.." or "damn it, today was.." lolol, i can be your listener all damn day. 
-                </p>
-                <p>
-                  And I just want to say I'm really really enchanted to meet you. Maybe that's all, Thank you for being my friend in sky
-                </p>
-                <p className="font-semibold text-rose-500 text-center"> With Sincere Heart, Ola.</p>
-            </div>
+          {/* TAHAP 2: KONFIRMASI PASSWORD */}
+          {stage === 'password' && (
+            <form onSubmit={handleUnlock} autoComplete="off" className="text-center space-y-6">
+              <div className="text-6xl">🔒</div>
+              <h2 className="text-2xl font-semibold text-gray-700">Security Check</h2>
+              <p className="text-gray-600 text-sm">Please enter the password to see the letter.</p>
+              
+              <input 
+                type="password"
+                name="not-a-password"
+                autoComplete="new-password"
+                value={passwordInput}
+                onChange={(e) => setPasswordInput(e.target.value)}
+                placeholder="Enter password..."
+                className={`w-full p-4 bg-white/60 border-2 rounded-2xl text-center text-lg focus:outline-none transition text-[#c9184a] placeholder-pink-200 font-bold ${
+                  loginError ? 'border-red-400 focus:ring-red-100' : 'border-pink-100 focus:ring-rose-100'
+                }`}
+                required
+              />
+              
+              {loginError && <p className="text-red-500 text-sm font-medium">❌ Incorrect password. Try again.</p>}
+              
+              <div className="flex space-x-3">
+                  <button 
+                    type="button"
+                    onClick={() => setStage('closed')}
+                    className="w-1/2 bg-gray-100 text-gray-500 font-semibold py-3 rounded-xl hover:bg-gray-200 transition"
+                  >
+                    Cancel
+                  </button>
+                  <button 
+                    type="submit"
+                    className="w-1/2 bg-[#ff4d6d] text-white font-semibold py-3 rounded-xl shadow-md hover:bg-[#ff758f] transition"
+                  >
+                    Unlock
+                  </button>
+              </div>
+            </form>
+          )}
 
-            {/* FOTO POLAROID */}
-            <div className="border-t border-rose-100 pt-8 flex justify-center">
-                {/* Frame Polaroid */}
-                <div className="bg-white p-4 shadow-lg rotate-[-5deg] transform border-2 border-gray-100 inline-block">
-                    {/* Kotak Gambarnya (Hanya placeholder warna pink) */}
-                    <div className="w-60 h-60 bg-rose-100 flex items-center justify-center rounded border border-rose-200 mb-4">
-                        <img src="/tea.jpeg" alt="Polaroid Memory" className="w-full h-full object-cover rounded" />
-                        {/* Kalau ada foto beneran, hapus span di atas terus pakai <img src="/foto-kamu.jpg" /> */}
+          {/* TAHAP 3: SURAT SUDAH TERBUKA */}
+          {stage === 'open' && (
+            <div className="space-y-8 animate-in fade-in zoom-in duration-700">
+              <div className="border-b-2 border-dashed border-rose-200 pb-4 text-center">
+                  <h2 className="text-3xl font-bold text-gray-800 tracking-tight">My Heartfelt Message</h2>
+                  <p className="text-rose-400 font-medium">To My Dearest Friend, Tea.</p>
+              </div>
+
+              <div className="space-y-4 text-gray-700 leading-relaxed text-lg italic">
+                  <p className="indent-8">
+                  Hi tea, idunno I just suddenly thought of making this, cz you are probably the biggest and sweetest soul I’ve ever met. 
+                  I know lately things have been feeling heavy with all those exams—I can almost hear you saying 'Mệt quá đii' from here—but I want you to know that I see how hard you’re working, and I’m already so proud of you.
+                  </p>
+                  <p>
+                    Please don't push yourself too hard, okay? Your brain needs a break too! If you ever feel like the world is a bit too much, or if those exams are driving you crazy, I’m right here. Whether you want to tell me 'today I was...' or just a frustrated 'damn it, today was...', 
+                    I’ll be your listener all day long. No judgment, istg.
+                  </p>
+                  <p>
+                    Actually, I also want to be honest with you— I’m far from perfect and I’m definitely not that good at many things, so please don't have too high expectations of me.. 
+                    I really hope our friendship can last for a very long time, through the busy we do, the 'mệt quá' days, and all the damn time we spend together in Sky. I’d love to keep growing and learning alongside a soul as kind as yours.
+                  </p>
+                  <p>
+                    I’m truly, deeply enchanted to meet you. Thank you for being such a light in my life and for being my another favorite person to fly with in Sky. 
+                    Let’s make a deal: you finish those exams, and then we’ll go on a long, stress-free candle run together, okay? HAHAH
+                  </p>
+                  <p>
+                    Until then, eat well, get some proper sleep, and just breathe. You’re doing amazing.
+                  </p>
+                  <p>
+                    Cố lên nhé, myscoobydobbydoosweetdarl supercalifragilisticexpialidocious 😼⭐️‼️
+                  </p>
+                  <p className="font-bold text-rose-500 text-center not-italic"> With Sincere Heart, Ola.</p>
+              </div>
+
+              {/* SLIDER POLAROID */}
+              <div className="relative pt-6 flex justify-center">
+                <div className="group relative">
+                  <div className="bg-white p-4 shadow-xl rotate-[-3deg] transform border-2 border-gray-50 inline-block w-64 md:w-72 transition-transform duration-500">
+                    <div className="w-full h-64 bg-rose-50 rounded overflow-hidden mb-4 relative">
+                      <img 
+                        src={photos[currentPhoto].src} 
+                        alt="Memory" 
+                        className="w-full h-full object-cover transition-opacity duration-500" 
+                      />
                     </div>
-                    {/* Tulisan di bawah foto */}
-                    <div className="font-mono text-center text-gray-500">
-                        Tea.
+                    <div className="font-mono text-center text-gray-500 text-sm">
+                      {photos[currentPhoto].caption}
                     </div>
+                  </div>
+
+                  {/* TOMBOL NAVIGASI */}
+                  <button 
+                    onClick={prevPhoto} 
+                    className="absolute -left-5 top-1/2 -translate-y-1/2 bg-white shadow-lg rounded-full w-10 h-10 flex items-center justify-center border border-rose-100 hover:bg-rose-50 z-30"
+                  >
+                    ⬅️
+                  </button>
+                  <button 
+                    onClick={nextPhoto} 
+                    className="absolute -right-5 top-1/2 -translate-y-1/2 bg-white shadow-lg rounded-full w-10 h-10 flex items-center justify-center border border-rose-100 hover:bg-rose-50 z-30"
+                  >
+                    ➡️
+                  </button>
                 </div>
+              </div>
+              <p className="text-center text-[10px] text-gray-400 uppercase tracking-widest mt-2">Tap arrows to see more photos</p>
             </div>
+          )}
 
-          </div>
-        )}
-
+        </div>
       </div>
     </main>
   );
